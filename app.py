@@ -5,6 +5,7 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 import requests
 import youtube_dl
+import os
 
 
 class SearchBarForm(FlaskForm):
@@ -13,7 +14,8 @@ class SearchBarForm(FlaskForm):
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
+app.config['SECRET_KEY'] = os.getenv("secret_key")
+api_key = os.getenv("api_key")
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -23,7 +25,7 @@ def index():
     if form.is_submitted():
         search_term = form.search_term.data
         search_result = requests.get(
-            f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=42&q={search_term}&key=AIzaSyAYTvVEGzHX3AtoNAaojZIg62M3WQ-yZhE')
+            f'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=42&q={search_term}&key={api_key}')
         items = search_result.json()['items']
 
         return render_template('results.html', result=items)
