@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href="/" class="btn btn-outline-danger" > Zurück </a>
+    <br>
+    <ul class="list-group">
+        {% for item in result %}
+
+            <div class="card">
+                <div class="row">
+                    <div class="col"><img class="card-img-top" src="{{ item['snippet']['thumbnails']['high']['url'] }}"
+                                          alt="Card image cap"></div>
+                    <div class="col">
+                        <div class="card-body">
+                            <p class="card-text">{{ item['snippet']['title'] }}</p>
+                            <form action="/download" method="post">
+                                <button type="submit" class="btn btn-outline-success" >Download</button>
+                                <input type="text" style="display: none" name="url" id="url" value="https://youtube.com/watch?v={{ item['id']['videoId'] }}">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </ul>
+
+{% endblock %}
